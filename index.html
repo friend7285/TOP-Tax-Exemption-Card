@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>澎湖TOP旅行通</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+.fullscreen-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+/* 點擊提示 */
+.tap-hint {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 13px;
+  padding: 8px 20px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  font-family: -apple-system, 'PingFang TC', sans-serif;
+  opacity: 1;
+  transition: opacity 1s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.tap-hint.hide {
+  opacity: 0;
+}
+/* 全螢幕遮罩（首次點擊觸發） */
+.fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  cursor: pointer;
+  background: transparent;
+}
+
+  </style>
+</head>
+<body>
+<div class="fullscreen-container">
+  <img
+    class="photo"
+    src="https://lh3.googleusercontent.com/pw/AP1GczM4Ju66go0AGejjhONCDu-9GbJc9_T-30SQdcr_fsY3Gnsuh7KJZuEc3kVyeMoO-UR3QIEDo8CiT6V5apIZ4Pisf_KjFVqXqJxdVbCLpfDKhRu-Wq8=w1920"
+    alt="澎湖旅遊照片"
+  />
+</div>
+<div class="tap-hint" id="hint">👆 點擊畫面進入全螢幕</div>
+<div class="fullscreen-overlay" id="overlay"></div>
+<script>
+  const overlay = document.getElementById('overlay');
+  const hint = document.getElementById('hint');
+  function goFullscreen() {
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else if (el.mozRequestFullScreen) el.mozRequestFullScreen();
+    [overlay.style](http://overlay.style).display = 'none';
+    hint.classList.add('hide');
+  }
+  overlay.addEventListener('click', goFullscreen);
+  overlay.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    goFullscreen();
+  });
+  // 桌機自動嘗試全螢幕
+  window.addEventListener('load', () => {
+    // iOS 不支援 requestFullscreen，直接隱藏提示
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    if (isIOS) {
+      [overlay.style](http://overlay.style).display = 'none';
+      hint.classList.add('hide');
+    }
+  });
+  // 隱藏提示（5秒後）
+  setTimeout(() => hint.classList.add('hide'), 5000);
+</script>
+</body>
+</html> 
